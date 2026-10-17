@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leitor Digital</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      color: #f8fafc;
+      background: #101827;
+    }
+    .app {
+      width: 100%;
+      max-width: 380px;
+      padding: 24px;
+      text-align: center;
+      background: #1e293b;
+      border-radius: 20px;
+    }
+    .fingerprint { font-size: 76px; margin: 18px 0; }
+    input, button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      border: 0;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    input { background: #f8fafc; color: #111827; }
+    button { background: #0284c7; color: white; font-weight: bold; }
+    button:active { background: #0369a1; }
+    #resultado { min-height: 28px; margin-top: 20px; color: #4ade80; }
+    .nota { color: #cbd5e1; font-size: 13px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1>Leitor Digital</h1>
+    <p>Regista um nome para começar.</p>
+    <div class="fingerprint" aria-hidden="true">👆</div>
+    <label for="nome">Nome da pessoa</label>
+    <input id="nome" type="text" placeholder="Escreve o teu nome" autocomplete="name">
+    <button id="registar" type="button">Registar nome</button>
+    <button id="identificar" type="button">Testar identificação</button>
+    <p id="resultado" role="status" aria-live="polite"></p>
+    <p class="nota">Demonstração inicial: este ficheiro guarda um nome neste navegador e não lê a impressão digital verdadeira. A autenticação real precisa de uma aplicação Android nativa.</p>
+  </main>
+  <script>
+    const campoNome = document.getElementById("nome");
+    const resultado = document.getElementById("resultado");
+
+    document.getElementById("registar").addEventListener("click", () => {
+      const nome = campoNome.value.trim();
+      if (!nome) {
+        resultado.textContent = "Escreve primeiro o teu nome.";
+        return;
+      }
+      localStorage.setItem("leitorDigitalNome", nome);
+      resultado.textContent = "Nome registado neste navegador!";
+    });
+
+    document.getElementById("identificar").addEventListener("click", () => {
+      const nome = localStorage.getItem("leitorDigitalNome");
+      resultado.textContent = nome
+        ? "Nome guardado: " + nome
+        : "Regista primeiro um nome.";
+    });
+  </script>
+</body>
+</html>
